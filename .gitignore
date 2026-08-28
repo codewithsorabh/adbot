@@ -1,0 +1,8 @@
+# Ignore everything
+*
+
+# Keep these files
+!README.md
+!.gitignore
+!install.sh
+!installer
