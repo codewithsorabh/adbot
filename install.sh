@@ -7,12 +7,10 @@ set -e
 # ============================================================
 
 REPO_URL="https://github.com/codewithsorabh/adbot"
-
 DOWNLOAD_URL="${REPO_URL}/raw/refs/heads/main/installer"
 
 BIN_DIR="${HOME}/.local/bin"
 INSTALLER="${BIN_DIR}/installer"
-
 
 # ============================================================
 # Check curl
@@ -29,7 +27,12 @@ if ! command -v curl >/dev/null 2>&1; then
     exit 1
 fi
 
-echo "install..."
+echo "Installing ADBOT..."
+echo
+
+# ============================================================
+# Create directories
+# ============================================================
 
 mkdir -p "$BIN_DIR"
 
@@ -37,16 +40,18 @@ mkdir -p "$BIN_DIR"
 # Download installer
 # ============================================================
 
+echo "[1/4] Downloading installer..."
+
 curl -fL \
     --progress-bar \
     "$DOWNLOAD_URL" \
     -o "$INSTALLER"
 
-
 # ============================================================
 # Make executable
 # ============================================================
 
+echo "[2/4] Making installer executable..."
 
 chmod +x "$INSTALLER"
 
@@ -54,21 +59,30 @@ chmod +x "$INSTALLER"
 # Configure PATH
 # ============================================================
 
+echo "[3/4] Configuring PATH..."
+
 PATH_LINE='export PATH="$HOME/.local/bin:$PATH"'
 
 add_path() {
 
     local file="$1"
 
-    if [ -f "$file" ]; then
+    # Create file if it does not exist
+    if [ ! -f "$file" ]; then
+        echo "[INFO] Creating $file..."
+        touch "$file"
+    fi
 
-        if ! grep -Fqx "$PATH_LINE" "$file" 2>/dev/null; then
+    # Add PATH only if it is not already present
+    if ! grep -Fqx "$PATH_LINE" "$file" 2>/dev/null; then
 
-            echo "" >> "$file"
-            echo "# ADBOT" >> "$file"
-            echo "$PATH_LINE" >> "$file"
+        echo "" >> "$file"
+        echo "# ADBOT" >> "$file"
+        echo "$PATH_LINE" >> "$file"
 
-        fi
+        echo "[OK] PATH added to $file"
+    else
+        echo "[OK] PATH already configured in $file"
     fi
 }
 
@@ -81,12 +95,24 @@ add_path "$HOME/.profile"
 # Zsh
 add_path "$HOME/.zshrc"
 
-# Current shell
+# ============================================================
+# Current shell PATH
+# ============================================================
+
 export PATH="$BIN_DIR:$PATH"
 
 # ============================================================
+# Reload Bash configuration
+# ============================================================
+
+if [ -f "$HOME/.bashrc" ]; then
+    source "$HOME/.bashrc"
+fi
+# ============================================================
 # Verify installer
 # ============================================================
+
+echo "[4/4] Verifying installation..."
 
 if [ ! -f "$INSTALLER" ]; then
     echo
@@ -100,18 +126,29 @@ if [ ! -x "$INSTALLER" ]; then
     exit 1
 fi
 
+# Verify command
+if command -v installer >/dev/null 2>&1; then
+    echo "[OK] installer command is available."
+else
+    echo "[INFO] installer installed successfully."
+    echo "[INFO] Restart your shell or run:"
+    echo
+    echo "  source ~/.bashrc"
+fi
+
 # ============================================================
 # Complete
 # ============================================================
 
 echo
 echo "=============================================="
-echo "        ADBOT INSTALLATION COMPLETE"
+echo "       ADBOT INSTALLATION COMPLETE"
 echo "=============================================="
 echo
 
-echo "Installed successully"
+echo "Installed successfully."
 
 echo
 echo "Run:"
 echo "  installer"
+echo
