@@ -206,33 +206,56 @@ ADBOT follows [Semantic Versioning (SemVer)](https://semver.org/). The root `VER
 
 ### Creating a Release
 
-GitHub Actions automatically builds multi-platform binaries, generates SHA256 checksums, and publishes the GitHub Release whenever a Git tag matching `v*` is pushed.
+You can create and publish releases either automatically using the built-in **Release Manager** or manually.
 
-To create a new release:
+#### Option A: Automated Release Manager (Recommended)
 
-1. Update the version number in `VERSION`:
+Run the included release manager utility (or `release.exe` on Windows):
+
+```bash
+# Using the prebuilt binary
+./release.exe
+
+# Or via Go directly
+go run ./cmd/release
+```
+
+The interactive prompt will ask for:
+- **Release Version**: Defaults to the version in `VERSION` (e.g. `1.0.0`)
+- **Files to stage**: Defaults to `.` (all modified files)
+- **Commit message**: Defaults to `release: v<VERSION>`
+- **Auto-push**: Pushes the branch and tag to GitHub automatically
+
+You can also pass CLI flags for non-interactive automation:
+```bash
+go run ./cmd/release --version 1.0.0 --push --yes
+```
+
+#### Option B: Manual Release
+
+1. Update the version in `VERSION`:
    ```bash
-   echo "1.0.1" > VERSION
+   echo 1.0.0 > VERSION
    ```
 
-2. Commit the change:
+2. Stage and commit:
    ```bash
-   git add VERSION
-   git commit -m "release: v1.0.1"
+   git add .
+   git commit -m "release: v1.0.0"
    ```
 
 3. Create the release tag:
    ```bash
-   git tag v1.0.1
+   git tag v1.0.0
    ```
 
-4. Push the branch and the tag to GitHub:
+4. Push commit and tag to GitHub:
    ```bash
    git push origin main
-   git push origin v1.0.1
+   git push origin v1.0.0
    ```
 
-5. GitHub Actions builds all binaries and attaches them to the new [GitHub Release](https://github.com/codewithsorabh/adbot/releases).
+GitHub Actions will automatically trigger, build multi-platform binaries, calculate `checksums.txt`, and publish the release.
 
 ---
 

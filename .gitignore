@@ -4,7 +4,8 @@
 /adbot-*
 /installer
 /installer.exe
-/test-*
+/release
+/release.exe
 /dist/
 /bin/
 /release-artifacts/
