@@ -1,8 +1,32 @@
-# Ignore everything
-*
+# Binaries and build outputs
+/adbot
+/adbot.exe
+/adbot-*
+/installer
+/installer.exe
+/test-*
+/dist/
+/bin/
+/release-artifacts/
 
-# Keep these files
-!README.md
-!.gitignore
-!install.sh
-!installer
+# Generated deployment directory
+/adbot/
+
+# Environment files and credentials
+.env
+*.env
+*.key
+
+# Go test and coverage artifacts
+*.out
+*.test
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
