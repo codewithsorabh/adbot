@@ -49,20 +49,30 @@ ADBOT is distributed as statically-compiled native binaries (`CGO_ENABLED=0`) fo
 
 ## Quick Installation
 
-### Install Latest Release
+### Linux & macOS
 
-Run the official installer script to automatically detect your OS/architecture, download the latest release binary from GitHub Releases, verify its SHA256 checksum, and configure your `$PATH`:
+Run the official shell installer to detect OS/architecture, download the prebuilt binary, verify its SHA256 checksum, and configure `$PATH`:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/codewithsorabh/adbot/main/install.sh | bash
 ```
 
-### Install Specific Version
-
-You can specify a target version using the `VERSION` environment variable:
-
+To install a specific version:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/codewithsorabh/adbot/main/install.sh | VERSION=1.0.0 bash
+```
+
+### Windows (PowerShell)
+
+Run the PowerShell installer in Windows Terminal or PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/codewithsorabh/adbot/main/install.ps1 | iex
+```
+
+To install a specific version:
+```powershell
+$env:VERSION="1.0.0"; irm https://raw.githubusercontent.com/codewithsorabh/adbot/main/install.ps1 | iex
 ```
 
 ---
