@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0b1020">
+  <title>Backady SVG Gallery</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: #0b1020;
+      --panel: #111827;
+      --panel-2: #0f172a;
+      --border: #263246;
+      --text: #e5edf8;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --accent-strong: #3b82f6;
+      --shadow: 0 12px 30px rgb(0 0 0 / 18%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at top, rgb(59 130 246 / 10%), transparent 38rem),
+        var(--page);
+      color: var(--text);
+      font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .shell {
+      width: min(1240px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 42px 0 56px;
+    }
+
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -.04em;
+    }
+
+    .intro {
+      max-width: 650px;
+      margin: 12px 0 0;
+      color: var(--muted);
+    }
+
+    .count {
+      flex: 0 0 auto;
+      margin-top: 4px;
+      padding: 7px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgb(17 24 39 / 75%);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 24px 0 18px;
+    }
+
+    .filters, .toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button, .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--panel);
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease, transform .15s ease;
+    }
+
+    button:hover, .button:hover {
+      border-color: #5274a2;
+      background: #172238;
+    }
+
+    button:active, .button:active { transform: translateY(1px); }
+
+    button.active {
+      border-color: var(--accent-strong);
+      background: rgb(59 130 246 / 16%);
+      color: #bfdbfe;
+    }
+
+    button:focus-visible, a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgb(17 24 39 / 96%), rgb(15 23 42 / 96%));
+      box-shadow: var(--shadow);
+    }
+
+    .preview {
+      display: grid;
+      place-items: center;
+      min-height: 230px;
+      padding: 28px;
+      background-color: #f8fafc;
+      background-image:
+        linear-gradient(45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(-45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #e2e8f0 75%),
+        linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      background-size: 16px 16px;
+    }
+
+    .preview[data-bg="light"] {
+      background: #f8fafc;
+      background-image: none;
+    }
+
+    .preview[data-bg="dark"] {
+      background: #0b1020;
+      background-image: none;
+    }
+
+    .preview[data-bg="checker"] {
+      background-color: #f8fafc;
+      background-image:
+        linear-gradient(45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(-45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #e2e8f0 75%),
+        linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      background-size: 16px 16px;
+    }
+
+    .preview img {
+      display: block;
+      width: 100%;
+      max-width: 560px;
+      max-height: 170px;
+      object-fit: contain;
+    }
+
+    .preview img.emblem {
+      width: min(100%, 170px);
+      max-height: 170px;
+    }
+
+    .preview img.wordmark {
+      max-height: 125px;
+    }
+
+    .preview img[hidden] { display: none; }
+
+    .missing {
+      display: none;
+      max-width: 420px;
+      text-align: center;
+      color: #b91c1c;
+      font-size: 13px;
+    }
+
+    .preview.has-error .missing { display: block; }
+    .preview.has-error img { display: none; }
+
+    .card-body { padding: 17px 18px 18px; }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .kind {
+      flex: 0 0 auto;
+      padding: 3px 7px;
+      border: 1px solid #34445c;
+      border-radius: 6px;
+      color: #a8c5eb;
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .path {
+      margin: 7px 0 14px;
+      color: var(--muted);
+      font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      overflow-wrap: anywhere;
+    }
+
+    .card-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .card-actions .button { min-height: 32px; padding: 6px 10px; }
+
+    .status {
+      min-height: 20px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 10;
+      max-width: calc(100% - 40px);
+      padding: 11px 15px;
+      border: 1px solid #3b516f;
+      border-radius: 10px;
+      background: #172238;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 24px, 620px); padding-top: 28px; }
+      header { flex-direction: column; gap: 14px; }
+      .grid { grid-template-columns: 1fr; }
+      .preview { min-height: 205px; padding: 22px; }
+      .toolbar { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">Backady · Brand assets</p>
+        <h1>SVG Preview Gallery</h1>
+        <p class="intro">Preview the Backady emblem, logos, and wordmarks in one place. Switch preview backgrounds to check how each asset looks on light and dark surfaces.</p>
+      </div>
+      <div class="count" id="asset-count">7 SVG assets</div>
+    </header>
+
+    <section class="toolbar" aria-label="Gallery controls">
+      <div class="filters" role="group" aria-label="Filter assets">
+        <button class="active" type="button" data-filter="all">All assets</button>
+        <button type="button" data-filter="emblem">Emblem</button>
+        <button type="button" data-filter="logo">Logos</button>
+        <button type="button" data-filter="wordmark">Wordmarks</button>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" id="background-toggle">Preview background: Checker</button>
+        <button type="button" id="reload-assets">Reload previews</button>
+      </div>
+    </section>
+
+    <section class="grid" id="gallery" aria-label="SVG assets">
+      <article class="card" data-type="emblem">
+        <div class="preview" data-bg="checker">
+          <img class="emblem" src="./backady-emblem.svg" alt="Backady emblem" loading="eager">
+          <p class="missing">Could not load <strong>backady-emblem.svg</strong>. Check that the SVG exists beside this index.html file.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h2>Backady Emblem</h2><span class="kind">Emblem</span></div>
+          <p class="path">backady-emblem.svg</p>
+          <div class="card-actions">
+            <a class="button" href="./backady-emblem.svg" target="_blank" rel="noopener">Open SVG ↗</a>
+            <button type="button" data-copy="backady-emblem.svg">Copy filename</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="logo">
+        <div class="preview" data-bg="dark">
+          <img src="./backady-logo-dark.svg" alt="Backady logo on dark background" loading="eager">
+          <p class="missing">Could not load <strong>backady-logo-dark.svg</strong>. Check that the SVG exists beside this index.html file.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h2>Backady Logo · Dark</h2><span class="kind">Logo</span></div>
+          <p class="path">backady-logo-dark.svg</p>
+          <div class="card-actions">
+            <a class="button" href="./backady-logo-dark.svg" target="_blank" rel="noopener">Open SVG ↗</a>
+            <button type="button" data-copy="backady-logo-dark.svg">Copy filename</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="logo">
+        <div class="preview" data-bg="dark">
+          <img src="./backady-logo-horizontal-dark.svg" alt="Backady horizontal logo for dark surfaces" loading="eager">
+          <p class="missing">Could not load <strong>backady-logo-horizontal-dark.svg</strong>. Check that the SVG exists beside this index.html file.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h2>Backady Horizontal Logo · Dark</h2><span class="kind">Logo</span></div>
+          <p class="path">backady-logo-horizontal-dark.svg</p>
+          <div class="card-actions">
+            <a class="button" href="./backady-logo-horizontal-dark.svg" target="_blank" rel="noopener">Open SVG ↗</a>
+            <button type="button" data-copy="backady-logo-horizontal-dark.svg">Copy filename</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="logo">
+        <div class="preview" data-bg="light">
+          <img src="./backady-logo-horizontal-light.svg" alt="Backady horizontal logo for light surfaces" loading="eager">
+          <p class="missing">Could not load <strong>backady-logo-horizontal-light.svg</strong>. Check that the SVG exists beside this index.html file.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h2>Backady Horizontal Logo · Light</h2><span class="kind">Logo</span></div>
+          <p class="path">backady-logo-horizontal-light.svg</p>
+          <div class="card-actions">
+            <a class="button" href="./backady-logo-horizontal-light.svg" target="_blank" rel="noopener">Open SVG ↗</a>
+            <button type="button" data-copy="backady-logo-horizontal-light.svg">Copy filename</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="logo">
+        <div class="preview" data-bg="light">
+          <img src="./backady-logo-light.svg" alt="Backady logo on light background" loading="eager">
+          <p class="missing">Could not load <strong>backady-logo-light.svg</strong>. Check that the SVG exists beside this index.html file.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h2>Backady Logo · Light</h2><span class="kind">Logo</span></div>
+          <p class="path">backady-logo-light.svg</p>
+          <div class="card-actions">
+            <a class="button" href="./backady-logo-light.svg" target="_blank" rel="noopener">Open SVG ↗</a>
+            <button type="button" data-copy="backady-logo-light.svg">Copy filename</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="wordmark">
+        <div class="preview" data-bg="dark">
+          <img class="wordmark" src="./backady-wordmark-dark.svg" alt="Backady wordmark for dark surfaces" loading="eager">
+          <p class="missing">Could not load <strong>backady-wordmark-dark.svg</strong>. Check that the SVG exists beside this index.html file.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h2>Backady Wordmark · Dark</h2><span class="kind">Wordmark</span></div>
+          <p class="path">backady-wordmark-dark.svg</p>
+          <div class="card-actions">
+            <a class="button" href="./backady-wordmark-dark.svg" target="_blank" rel="noopener">Open SVG ↗</a>
+            <button type="button" data-copy="backady-wordmark-dark.svg">Copy filename</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-type="wordmark">
+        <div class="preview" data-bg="light">
+          <img class="wordmark" src="./backady-wordmark-light.svg" alt="Backady wordmark for light surfaces" loading="eager">
+          <p class="missing">Could not load <strong>backady-wordmark-light.svg</strong>. Check that the SVG exists beside this index.html file.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top"><h2>Backady Wordmark · Light</h2><span class="kind">Wordmark</span></div>
+          <p class="path">backady-wordmark-light.svg</p>
+          <div class="card-actions">
+            <a class="button" href="./backady-wordmark-light.svg" target="_blank" rel="noopener">Open SVG ↗</a>
+            <button type="button" data-copy="backady-wordmark-light.svg">Copy filename</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+    <footer>
+      Static HTML gallery · No dependencies · Keep this file in the same folder as the seven SVG files. For local preview, open this page in a browser or serve the folder with your preferred local development server.
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const gallery = document.getElementById('gallery');
+      const cards = [...gallery.querySelectorAll('.card')];
+      const filterButtons = [...document.querySelectorAll('[data-filter]')];
+      const backgroundButton = document.getElementById('background-toggle');
+      const status = document.getElementById('status');
+      const toast = document.getElementById('toast');
+      const backgrounds = ['checker', 'light', 'dark'];
+      const backgroundLabels = { checker: 'Checker', light: 'Light', dark: 'Dark' };
+      let backgroundIndex = 0;
+      let toastTimer;
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+      }
+
+      function setBackground(mode) {
+        cards.forEach(card => {
+          const preview = card.querySelector('.preview');
+          preview.dataset.bg = mode;
+        });
+        backgroundButton.textContent = `Preview background: ${backgroundLabels[mode]}`;
+      }
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const filter = button.dataset.filter;
+          filterButtons.forEach(item => {
+            const active = item === button;
+            item.classList.toggle('active', active);
+            item.setAttribute('aria-pressed', String(active));
+          });
+          cards.forEach(card => {
+            card.hidden = filter !== 'all' && card.dataset.type !== filter;
+          });
+          const visible = cards.filter(card => !card.hidden).length;
+          status.textContent = `Showing ${visible} of ${cards.length} assets.`;
+        });
+        button.setAttribute('aria-pressed', String(button.classList.contains('active')));
+      });
+
+      backgroundButton.addEventListener('click', () => {
+        backgroundIndex = (backgroundIndex + 1) % backgrounds.length;
+        setBackground(backgrounds[backgroundIndex]);
+      });
+
+      document.getElementById('reload-assets').addEventListener('click', () => {
+        cards.forEach(card => {
+          const img = card.querySelector('img');
+          const preview = card.querySelector('.preview');
+          preview.classList.remove('has-error');
+          const source = img.getAttribute('src').split('?')[0];
+          img.src = `${source}?reload=${Date.now()}`;
+        });
+        status.textContent = 'Reloaded SVG preview requests.';
+      });
+
+      cards.forEach(card => {
+        const img = card.querySelector('img');
+        const preview = card.querySelector('.preview');
+        img.addEventListener('load', () => preview.classList.remove('has-error'));
+        img.addEventListener('error', () => {
+          preview.classList.add('has-error');
+          status.textContent = `Unable to load ${img.getAttribute('src').replace('./', '')}. Verify the filename and folder.`;
+        });
+      });
+
+      document.querySelectorAll('[data-copy]').forEach(button => {
+        button.addEventListener('click', async () => {
+          const filename = button.dataset.copy;
+          try {
+            await navigator.clipboard.writeText(filename);
+            showToast(`Copied ${filename}`);
+          } catch {
+            const field = document.createElement('textarea');
+            field.value = filename;
+            field.setAttribute('readonly', '');
+            field.style.position = 'absolute';
+            field.style.left = '-9999px';
+            document.body.appendChild(field);
+            field.select();
+            const copied = document.execCommand('copy');
+            field.remove();
+            showToast(copied ? `Copied ${filename}` : 'Copy failed. Select the filename manually.');
+          }
+        });
+      });
+
+      document.getElementById('asset-count').textContent = `${cards.length} SVG assets`;
+      status.textContent = 'All seven SVG assets are listed. If a preview is missing, check the filename and relative path.';
+    })();
+  </script>
+</body>
+</html>
